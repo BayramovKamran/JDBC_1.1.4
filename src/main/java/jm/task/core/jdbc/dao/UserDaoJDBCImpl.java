@@ -3,9 +3,10 @@ package jm.task.core.jdbc.dao;
 import jm.task.core.jdbc.model.User;
 import jm.task.core.jdbc.util.Util;
 
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
 
 public class UserDaoJDBCImpl implements UserDao {
@@ -52,7 +53,17 @@ public class UserDaoJDBCImpl implements UserDao {
     }
 
     public List<User> getAllUsers() {
-        return null;
+        List<User> userList= new ArrayList<>();
+        try {
+            ResultSet set = statement.executeQuery("SELECT * FROM Users");
+            while (set.next()) {
+                User user = new User(set.getString(2), set.getString(3), set.getByte(4));
+                userList.add(user);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return userList;
     }
 
     public void cleanUsersTable() {
