@@ -13,7 +13,7 @@
   </component>
   <component name="DBNavigator.Project.DatabaseConsoleManager">
     <connection id="12a652e5-b0e0-45b8-bff7-945529828621">
-      <console name="Connection" type="STANDARD" schema="mysql" session="Main" />
+      <console name="Connection" type="STANDARD" schema="pp2" session="Main" />
     </connection>
   </component>
   <component name="DBNavigator.Project.DatabaseEditorStateManager">
@@ -21,6 +21,13 @@
   </component>
   <component name="DBNavigator.Project.DatabaseFileManager">
     <open-files />
+  </component>
+  <component name="DBNavigator.Project.DatasetFilterManager">
+    <filter-actions connection-id="12a652e5-b0e0-45b8-bff7-945529828621" dataset="pp1.users" active-filter-id="EMPTY_FILTER">
+      <filter id="f62216c6-b60e-4ef4-a95e-1f39492d309d" name="Filter 1" temporary="false" custom-name="false" type="basic" join-type="AND">
+        <condition column="age" operator="=" value="" active="true" />
+      </filter>
+    </filter-actions>
   </component>
   <component name="DBNavigator.Project.ObjectQuickFilterManager">
     <last-used-operator value="EQUAL" />
@@ -39,9 +46,9 @@
           <driver-library value="" />
           <driver value="" />
           <url-type value="DATABASE" />
-          <host value="localhost" />
+          <host value="127.0.0.1" />
           <port value="3306" />
-          <database value="mysql" />
+          <database value="pp1" />
           <type value="USER_PASSWORD" />
           <user value="root" />
           <deprecated-pwd value="MTIzNDU2Nzg=" />
