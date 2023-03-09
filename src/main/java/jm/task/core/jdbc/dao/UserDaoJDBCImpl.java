@@ -11,25 +11,41 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class UserDaoJDBCImpl implements UserDao {
-    private final Connection connection = Util.getConnection();
+    private static final Connection connection = Util.getConnection();
     public void createUsersTable() {
         try (Statement statement = connection.createStatement()) {
-            statement.execute("CREATE TABLE IF NOT EXISTS `users` (\n" +
-                    "  `idUsers` INT NOT NULL AUTO_INCREMENT,\n" +
-                    "  `name` VARCHAR(45) NOT NULL,\n" +
-                    "  `lastName` VARCHAR(45) NOT NULL,\n" +
-                    "  `age` INT NOT NULL,\n" +
-                    "  PRIMARY KEY (`idUsers`));\n");
+            statement.execute("""
+                    CREATE TABLE IF NOT EXISTS `users` (
+                      `idUsers` INT NOT NULL AUTO_INCREMENT,
+                      `name` VARCHAR(45) NOT NULL,
+                      `lastName` VARCHAR(45) NOT NULL,
+                      `age` INT NOT NULL,
+                      PRIMARY KEY (`idUsers`));
+                    """);
         } catch (SQLException e) {
             throw new RuntimeException(e);
+        } finally {
+            try {
+                connection.rollback();
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
         }
+
     }
 
     public void dropUsersTable() {
         try (Statement statement = connection.createStatement()) {
             statement.execute("DROP TABLE IF EXISTS `users`");
+            connection.commit();
         } catch (SQLException e) {
             throw new RuntimeException(e);
+        } finally {
+            try {
+                connection.rollback();
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
         }
     }
 
@@ -37,16 +53,30 @@ public class UserDaoJDBCImpl implements UserDao {
         try (Statement statement = connection.createStatement()) {
             statement.execute(String.format("INSERT INTO Users(name, lastName, age) VALUES('%s', '%s', %d );", name, lastName, age));
             System.out.printf("User с именем – %s добавлен в базу данных \n", name);
+            connection.commit();
         } catch (SQLException e) {
             throw new RuntimeException(e);
+        } finally {
+            try {
+                connection.rollback();
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
         }
     }
 
     public void removeUserById(long id) {
         try (Statement statement = connection.createStatement()) {
             statement.execute(String.format("DELETE FROM `Users` WHERE `idUsers` = %d", id));
+            connection.commit();
         } catch (SQLException e) {
             throw new RuntimeException(e);
+        } finally {
+            try {
+                connection.rollback();
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
         }
     }
 
@@ -59,8 +89,15 @@ public class UserDaoJDBCImpl implements UserDao {
                 user.setId(set.getLong(1));
                 userList.add(user);
             }
+            connection.commit();
         } catch (SQLException e) {
             throw new RuntimeException(e);
+        } finally {
+            try {
+                connection.rollback();
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
         }
         return userList;
     }
@@ -68,8 +105,15 @@ public class UserDaoJDBCImpl implements UserDao {
     public void cleanUsersTable() {
         try (Statement statement = connection.createStatement()) {
             statement.execute("DELETE FROM users;");
+            connection.commit();
         } catch (SQLException e) {
             throw new RuntimeException(e);
+        } finally {
+            try {
+                connection.rollback();
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
         }
     }
 }
