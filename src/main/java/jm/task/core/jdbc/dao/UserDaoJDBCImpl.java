@@ -22,6 +22,7 @@ public class UserDaoJDBCImpl implements UserDao {
                       `age` INT NOT NULL,
                       PRIMARY KEY (`idUsers`));
                     """);
+            connection.commit();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         } finally {
